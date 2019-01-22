@@ -1,6 +1,7 @@
 var brunt = require('./lib/bruntapi');
-var Service, Characteristic, Accessory, uuid;
 var util = require('util');
+
+var Service, Characteristic, Accessory, uuid;
 var BruntThing;
 
 const timeRefresh = 30000;  // refresh state cycle time in ms
@@ -47,6 +48,8 @@ BruntPlatform.prototype = {
 			setInterval(that.reloadData.bind(that), timeRefresh);
 		};
 		*/
+
+		// execute the function: brunt.login
 		brunt.login(this.user, this.pass, function(loginData){
 			brunt.getThings(loginData.sessionId, function(things){
 					
@@ -65,7 +68,7 @@ BruntPlatform.prototype = {
 						thing.refreshCycle = thing.delay + thingTimeLapse;
 
 
-						accessory = new BruntThing(that, thing);
+						accessory = new BruntThing(that, thing); // ???
 
 						if (accessory != undefined) {
 							that.log("Device Added (Name: %s, ID: %s, Group: %s, Session: %s)", accessory.name, accessory.deviceid, accessory.deviceGroup, accessory.sessionId);

@@ -29,7 +29,7 @@ module.exports = function (oAccessory, oService, oCharacteristic, ouuid) {
 };
 module.exports.BruntBlindAccessory = BruntBlindAccessory;
 
-function BruntBlindAccessory(platform, device) {
+function BruntBlindAccessory(platform, device) { // new BruntThing(that, thing);
 	
 	this.deviceid = device.uri;
 	this.name = device.name;
@@ -43,7 +43,8 @@ function BruntBlindAccessory(platform, device) {
 	var idKey = "hbdev:brunt:thing:" + this.deviceid;
 	var id = uuid.generate(idKey);
 	
-	Accessory.call(this, this.name, id);
+	Accessory.call(this, this.name, id); // ???
+
 	var that = this;
 	
 	// HomeKit does really strange things since we have to wait on the data to get populated
@@ -54,9 +55,9 @@ function BruntBlindAccessory(platform, device) {
 	that.state.refreshCycle = stateRefreshRate;
 
 	this.loadData();
-	this.loadData.bind(this);
+	this.loadData.bind(this); // bind this to loadData()
 
-	var refreshInterval = setInterval(this.loadData.bind(this), that.state.refreshCycle);
+	var refreshInterval = setInterval(this.loadData.bind(this), that.state.refreshCycle); // update regularly
 
 	// AccessoryInformation characteristic
 	// Manufacturer characteristic
@@ -175,13 +176,15 @@ function refreshState(callback) {
 	});		
 }
 
+
 function loadData() {
 	var that = this;
 	this.refreshState(function() { 
 	// Refresh the status on home App
+	that.log("Refresh the status on home App");
 		for (var i = 0; i < that.services.length; i++) {
 			for (var j = 0; j < that.services[i].characteristics.length; j++) {
-				that.services[i].characteristics[j].getValue();
+				that.services[i].characteristics[j].getValue(); // ???
 			}
 		}
 	});		
@@ -191,6 +194,7 @@ function loadData() {
 function getServices() {
 	return this.services;
 }
+
 
 function identify() {
 	this.log("Identify! (name: %s)", this.name);
